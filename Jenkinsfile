@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+  }
   stages {
   	
     stage('Docker Build') {
@@ -9,14 +12,16 @@ pipeline {
       }
     }
 
-    stage('Docker Push') {
-    	agent any
+    stage('Login') {
       steps {
-      	withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials')]) {
-        	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push onuromertunc/helloworld:latest'
-        }
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
+    stage('Push') {
+      steps {
+        sh 'docker push onuromertunc/helloworld:latest'
+      }
+    }
+  
   }
 }
