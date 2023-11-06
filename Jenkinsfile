@@ -1,27 +1,22 @@
 pipeline {
-environment {
-registry = "onuromertunc/helloworld"
-registryCredential = 'docker-hub-credentials'
-dockerImage = ''
-}
-agent any
-stages {
+	agent any
+  stages {
+  	
+    stage('Docker Build') {
+    	agent any
+      steps {
+      	sh 'docker build -t onuromertunc/helloworld:latest .'
+      }
+    }
 
-stage('Building our image') {
-steps{
-script {
-dockerImage = docker.build registry + ":$BUILD_NUMBER"
-}
-}
-}
-stage('Deploy our image') {
-steps{
-script {
-docker.withRegistry( '', registryCredential ) {
-dockerImage.push()
-}
-}
-}
-}
-}
+    stage('Docker Push') {
+    	agent any
+      steps {
+      	withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials')]) {
+        	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push onuromertunc/helloworld:latest'
+        }
+      }
+    }
+  }
 }
