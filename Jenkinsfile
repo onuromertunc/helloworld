@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push onuromertunc/helloworld:latest'
+        sh 'docker push 192.168.1.183:6161//helloworld:latest'
       }
     }
   
