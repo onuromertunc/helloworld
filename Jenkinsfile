@@ -8,7 +8,7 @@ pipeline {
     stage('Docker Build') {
     	agent any
       steps {
-      	sh 'docker build -t onuromertunc/helloworld:latest .'
+      	sh 'docker build -t helloworld:latest .'
       }
     }
 
@@ -20,13 +20,13 @@ pipeline {
     
      stage('tag') {
       steps {
-        sh 'docker tag onuromertunc/helloworld 192.168.1.183:6161/onuromertunc/helloworld:latest'
+        sh 'docker tag helloworld 192.168.1.183:6161/helloworld:latest'
       }
     }
 
     stage('Push') {
       steps {
-        sh 'docker push 192.168.1.183:6161/onuromertunc/helloworld:latest'
+        sh 'docker push 192.168.1.183:6161/helloworld:latest'
       }
     }
   
