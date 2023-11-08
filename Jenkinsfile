@@ -33,7 +33,7 @@ pipeline {
     stage('Deploying to Kubernetes') {
       steps {
         withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'SECRET_TOKEN', namespace: 'default, helloworld', serverUrl: 'https://192.168.1.113:6443']]) {
-    kubernetesDeploy(configs: "deployment.yml")
+        kubectl apply -f deployment.yaml
 }
           
         }
