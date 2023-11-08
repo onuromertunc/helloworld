@@ -29,6 +29,14 @@ pipeline {
         sh 'docker push 192.168.1.183:6161/helloworld:latest'
       }
     }
+
+    stage('Deploying to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "deployment.yaml")
+        }
+      }
+    }
   
   }
 }
