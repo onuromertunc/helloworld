@@ -20,23 +20,17 @@ pipeline {
     
      stage('tag') {
       steps {
-        sh 'docker tag helloworld 192.168.1.183:6161/helloworld:latest'
+        sh 'docker tag helloworld 192.168.1.170:6161/helloworld:latest'
       }
     }
 
     stage('Push') {
       steps {
-        sh 'docker push 192.168.1.183:6161/helloworld:latest'
+        sh 'docker push 192.168.1.170:6161/helloworld:latest'
       }
     }
 
-     stage('Deploy to k8s'){
-            steps{
-                script{
-                    kubernetesDeploy (configs: 'deployment.yaml',kubeconfigId: 'k8sconfigpwd')
-                }
-            }
-        }
+     
       }
     }
   
